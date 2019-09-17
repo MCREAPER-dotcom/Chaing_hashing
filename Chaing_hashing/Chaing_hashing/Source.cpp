@@ -11,27 +11,32 @@ int myhash(int data, int hashTableSize) {
 		return (data % hashTableSize);
 	else return 0;
 }
-void deleteNode(Node** hashTable, int hashTableSize, int hashTableIndex, int data) {
-	Node* p0, * p;
-	p0 = 0;
-	hashTableIndex = myhash(data, hashTableSize);
-	p = hashTable[hashTableIndex];
-	while (p && !(p->data == data)) {
-		p0 = p;
-		p = p->next;
+int CHECK() {
+	int lk;
+	while (true)
+	{
+		cin >> lk;
+		if (!cin)
+		{
+			cout << "INCORRECT" << endl;
+			cin.clear();
+			while (cin.get() != '\n');
+		}
+		else break;
 	}
-	if (!p) return;
-	if (p0)
-		p0->next = p->next;
-	else
-		hashTable[hashTableIndex] = p->next;
-	free(p);
+	return lk;
+}
+void deleteNode(Node** hashTable,int hashTableSize) {
+	for (int i = 0; i < hashTableSize; i++)
+	{
+		delete hashTable[i];
+	}
 }
 Node* insertNode(Node** hashTable, int hashTableSize, int hashTableIndex, int data) {
 	Node* p, * p0;
 	hashTableIndex = myhash(data, hashTableSize);
 	if ((p = new Node) == 0) {
-		cout << "Нехватка памяти (insertNode)\n";
+		cout << "net pamity (insertNode)\n";
 		return 0;
 	}
 	p0 = hashTable[hashTableIndex];
@@ -45,15 +50,15 @@ int main() {
 	Node** hashTable1;
 	Node** hashTable2;
 	Node** hashTable3;
-	int i, * a2, * a, maxnum, * a1, maxnum1, hashTableSize = 0, hashTableSize1 = 0, hashTableIndex = 0, hashTableIndex1 = 0;
-	cout << "Input of quantity element lots 1 : ";
-	cin >> maxnum;
-	cout << "input size of hash tables 1 : ";
-	cin >> hashTableSize;
-	cout << "Input of quantity element lots 2 : ";
-	cin >> maxnum1;
-	cout << "input size of hash tables 2 : ";
-	cin >> hashTableSize1;
+	int i, * a2, * a, maxnum=0, * a1, maxnum1=0, hashTableSize = 0, hashTableSize1 = 0, hashTableIndex = 0, hashTableIndex1 = 0;
+	cout << "vvedite kolihestvo elementov 1 mnojestva: ";
+	maxnum=CHECK();
+	cout << "vvedine razmer hash-tablic 1: ";
+	hashTableSize=CHECK();
+	cout << "vvedite kolihestvo elementov 2 mnojestva: ";
+	maxnum1=CHECK();
+	cout << "vvedine razmer hash-tablic 2: ";
+	hashTableSize1=CHECK();
 	a = new int[maxnum];
 	a1 = new int[maxnum1];
 	hashTable = new Node * [hashTableSize];
@@ -64,33 +69,33 @@ int main() {
 		hashTable[i] = NULL;
 	for (i = 0; i < hashTableSize1; i++)
 		hashTable1[i] = NULL;
-	cout << "Input element of 1 lot" << endl;
+	cout << "vvedite elementi 1 mnojestva:" << endl;
 	for (i = 0; i < maxnum; i++) {
 		int tempt = 0;
-		cin >> tempt;
+		tempt=CHECK();
 		a[i] = tempt;
 		insertNode(hashTable, hashTableSize, i, a[i]);
 	}
-	cout << "Input element of 2 lot" << endl;
+	cout << "vvedite elementi 2 mnojestva:" << endl;
 	for (i = 0; i < maxnum1; i++) {
 		int tempt = 0;
-		cin >> tempt;
+		tempt=CHECK();
 		a1[i] = tempt;
 		insertNode(hashTable1, hashTableSize1, i, a1[i]);
 	}
-	cout << "first" << endl;
+	cout << "1 mnojestvo :" << endl;
 	for (i = 0; i < maxnum; i++) {
 		cout << a[i];
 		if (i < maxnum - 1) cout << "\t";
 	}
 	cout << endl;
-	cout << "Second" << endl;
+	cout << "2 mnojestvo :" << endl;
 	for (i = 0; i < maxnum1; i++) {
 		cout << a1[i];
 		if (i < maxnum1 - 1) cout << "\t";
 	}
 	cout << endl;
-	cout << "first" << endl;
+	cout << "1 mnojestvo :" << endl;
 	for (i = 0; i < hashTableSize; i++) {
 		cout << i + 1 << "  :  ";
 		Node* Temp = hashTable[i];
@@ -100,7 +105,7 @@ int main() {
 		}
 		cout << endl;
 	}
-	cout << "Second";
+	cout << "2 mnojestvo :";
 	cout << endl;
 	for (i = 0; i < hashTableSize1; i++) {
 		cout << i + 1 << "  :  ";
@@ -112,159 +117,159 @@ int main() {
 		cout << endl;
 	}
 	cout << endl;
-	cout << "Input element for search" << endl;
-	int it = 0, k = 0;
-	cin >> it;
-	for (i = 0; i < hashTableSize; i++) {
-		int k1 = 0;
-		Node* Temp = hashTable[i];
-		while (Temp) {
-			k1++;
-			if (Temp->data == it) {
+	int MENU=0,MENU_CHECK=0;
+	do {
+		cout << "Vibrat variant: 1.Poisk, 2.Udalenie, 3.Obedinenie, 4.Peresechenie" << endl;
+		MENU_CHECK = CHECK();
+		if (MENU_CHECK == 1) {
+			cout << "vvedite element dlya poiska" << endl;
+			int it = 0, k = 0;
+			it = CHECK();
+			for (i = 0; i < hashTableSize; i++) {
+				int k1 = 0;
+				Node* Temp = hashTable[i];
+				while (Temp) {
+					k1++;
+					if (Temp->data == it) {
+						cout << i + 1 << "  :  ";
+						cout << k1 << endl;
+						k++;
+					}
+					Temp = Temp->next;
+				}
+			}
+			cout << endl;
+			if (k == 0) {
+				for (i = 0; i < hashTableSize1; i++) {
+					int k1 = 0;
+					Node* Temp = hashTable1[i];
+					while (Temp) {
+						k1++;
+						if (Temp->data == it) {
+							cout << i + 1 << "  :  ";
+							cout << k1 << endl;
+						}
+						Temp = Temp->next;
+					}
+
+				}
+				cout << endl;
+			}
+		}
+		else if (MENU_CHECK == 2) {
+			cout << "vvedite element dlya udaleniya" << endl;
+			int it1 = 0, k2 = 0, k3 = 0;
+			it1 = CHECK();
+			for (i = 0; i < maxnum - 1; i++) {
+				if (it1 == a[i]) {
+					for (int j = i; j < maxnum - 1; j++) {
+						a[j] = a[j + 1];
+					}
+					k2++;
+
+				}
+
+			}
+			if (k2 == 0) {
+				for (i = 0; i < maxnum - 1; i++) {
+					if (it1 == a1[i]) {
+						for (int j = i; j < maxnum1 - 1; j++) {
+							a1[j] = a1[j + 1];
+						}
+						k3++;
+					}
+				}
+				if (k3 != 0) {
+					for (i = 0; i < hashTableSize1; i++)
+						hashTable1[i] = NULL;
+					maxnum1 = maxnum1 - k3;
+					for (i = 0; i < maxnum1; i++) {
+						insertNode(hashTable1, hashTableSize1, i, a1[i]);
+					}
+				}
+			}
+			else {
+				for (i = 0; i < hashTableSize; i++)
+					hashTable[i] = NULL;
+				maxnum = maxnum - k2;
+				for (i = 0; i < maxnum; i++) {
+					insertNode(hashTable, hashTableSize, i, a[i]);
+				}
+			}
+			cout << "1 mnojestvo :" << endl;
+			for (i = 0; i < hashTableSize; i++) {
 				cout << i + 1 << "  :  ";
-				cout << k1;
-				k++;
-			}
-			Temp = Temp->next;
-		}
-	}
-	cout << endl;
-	if (k == 0) {
-		for (i = 0; i < hashTableSize1; i++) {
-			int k1 = 0;
-			Node* Temp = hashTable1[i];
-			while (Temp) {
-				k1++;
-				if (Temp->data == it) {
-					cout << i + 1 << "  :  ";
-					cout << k1;
+				Node* Temp = hashTable[i];
+				while (Temp) {
+					cout << Temp->data << " -> ";
+					Temp = Temp->next;
 				}
-				Temp = Temp->next;
+				cout << endl;
 			}
-
-		}
-		cout << endl;
-	}
-
-	cout << "Input element for delete" << endl;
-	int it1 = 0, k2 = 0, k3 = 0;
-	cin >> it1;
-	for (i = 0; i < maxnum - 1; i++) {
-		if (it1 == a[i]) {
-			for (int j = i; j < maxnum - 1; j++) {
-				a[j] = a[j + 1];
-			}
-			k2++;
-		}
-
-	}
-	if (k2 == 0) {
-		for (i = 0; i < maxnum - 1; i++) {
-			if (it1 == a1[i]) {
-				for (int j = i; j < maxnum1 - 1; j++) {
-					a1[j] = a1[j + 1];
+			cout << "2 mnojestvo :";
+			cout << endl;
+			for (i = 0; i < hashTableSize1; i++) {
+				cout << i + 1 << "  :  ";
+				Node* Temp1 = hashTable1[i];
+				while (Temp1) {
+					cout << Temp1->data << " -> ";
+					Temp1 = Temp1->next;
 				}
-				k3++;
+				cout << endl;
 			}
 		}
-		if (k3 != 0) {
-			for (i = 0; i < hashTableSize1; i++)
-				hashTable1[i] = NULL;
-			maxnum1 = maxnum1 - k3;
-			for (i = 0; i < maxnum1; i++) {
-				insertNode(hashTable1, hashTableSize1, i, a1[i]);
+		else if (MENU_CHECK == 3) {
+			cout << endl;
+			for (i = 0; i < hashTableSize1 + hashTableSize; i++)
+				hashTable2[i] = NULL;
+		
+			cout << "Obedinenie" << endl;
+			for (i = 0; i < maxnum; i++) {
+				insertNode(hashTable2, hashTableSize + hashTableSize1, i, a[i]);
 			}
-		}
-	}
-	else {
-		for (i = 0; i < hashTableSize; i++)
-			hashTable[i] = NULL;
-		maxnum = maxnum - k2;
-		for (i = 0; i < maxnum; i++) {
-			insertNode(hashTable, hashTableSize, i, a[i]);
-		}
-	}
-	cout << "first" << endl;
-	for (i = 0; i < hashTableSize; i++) {
-		cout << i + 1 << "  :  ";
-		Node* Temp = hashTable[i];
-		while (Temp) {
-			cout << Temp->data << " -> ";
-			Temp = Temp->next;
-		}
-		cout << endl;
-	}
-	cout << "Second";
-	cout << endl;
-	for (i = 0; i < hashTableSize1; i++) {
-		cout << i + 1 << "  :  ";
-		Node* Temp1 = hashTable1[i];
-		while (Temp1) {
-			cout << Temp1->data << " -> ";
-			Temp1 = Temp1->next;
-		}
-		cout << endl;
-	}
-	cout << endl;
-	for (i = 0; i < hashTableSize1 + hashTableSize; i++)
-		hashTable2[i] = NULL;
-	cout << "Union" << endl;
-	for (i = 0; i < maxnum; i++) {
-		insertNode(hashTable2, hashTableSize + hashTableSize1, i, a[i]);
-	}
-	for (i = maxnum; i < maxnum + maxnum1; i++) {
-		insertNode(hashTable2, hashTableSize1 + hashTableSize, i, a1[i - maxnum]);
-	}
-	for (i = 0; i < hashTableSize + hashTableSize1; i++) {
-		cout << i + 1 << "  :  ";
-		Node* Temp = hashTable2[i];
-		while (Temp) {
-			cout << Temp->data << " -> ";
-			Temp = Temp->next;
-		}
-		cout << endl;
-	}
-	for (i = 0; i < hashTableSize1 + hashTableSize; i++)
-		hashTable3[i] = NULL;
-	cout << "Intersection" << endl;
-	int tr = 0;
-	for (i = 0; i < maxnum; i++) {
-		for (int j = maxnum; j < maxnum + maxnum1; j++) {
-			if (a[i] == a1[j - maxnum]) {
-				insertNode(hashTable3, hashTableSize1 + hashTableSize, tr, a[i]);
-				tr++;
+			for (i = maxnum; i < maxnum + maxnum1; i++) {
+				insertNode(hashTable2, hashTableSize1 + hashTableSize, i, a1[i - maxnum]);
 			}
+			for (i = 0; i < hashTableSize + hashTableSize1; i++) {
+				cout << i + 1 << "  :  ";
+				Node* Temp = hashTable2[i];
+				while (Temp) {
+					cout << Temp->data << " -> ";
+					Temp = Temp->next;
+				}
+				cout << endl;
+			}
+			deleteNode(hashTable2, hashTableSize1 + hashTableSize);
+				}
+		else if (MENU_CHECK == 4) {
+			for (i = 0; i < hashTableSize1 + hashTableSize; i++)
+				hashTable3[i] = NULL;
+	
+			cout << "Peresechenie" << endl;
+			int tr = 0;
+			for (i = 0; i < maxnum; i++) {
+				for (int j = maxnum; j < maxnum + maxnum1; j++) {
+					if (a[i] == a1[j - maxnum]) {
+						insertNode(hashTable3, hashTableSize1 + hashTableSize, tr, a[i]);
+						tr++;
+					}
 
-		}
-	}
-	for (i = 0; i < hashTableSize + hashTableSize1; i++) {
-		cout << i + 1 << "  :  ";
-		Node* Temp = hashTable3[i];
-		while (Temp) {
-			cout << Temp->data << " -> ";
-			Temp = Temp->next;
-		}
-		cout << endl;
-	}
-	for (i = maxnum - 1; i >= 0; i--) {
-		deleteNode(hashTable, hashTableSize, i, a[i]);
-	}
-	for (i = maxnum1 - 1; i >= 0; i--) {
-		deleteNode(hashTable1, hashTableSize1, i, a1[i]);
-	}
-	for (i = maxnum1 + maxnum - 1; i >= maxnum; i--) {
-		deleteNode(hashTable2, hashTableSize1 + hashTableSize, i, a1[i - maxnum1]);
-	}
-	for (i = maxnum - 1; i >= 0; i--) {
-		deleteNode(hashTable2, hashTableSize + hashTableSize1, i, a[i]);
-	}
-	tr = 0;
-	for (i = 0; i < maxnum; i++) {
-		for (int j = maxnum; j < maxnum + maxnum1; j++) {
-			if (a[i] == a1[j - maxnum]) {
-				deleteNode(hashTable3, hashTableSize1 + hashTableSize, tr, a[i]);
-				tr++;
+				}
 			}
+			for (i = 0; i < hashTableSize + hashTableSize1; i++) {
+				cout << i + 1 << "  :  ";
+				Node* Temp = hashTable3[i];
+				while (Temp) {
+					cout << Temp->data << " -> ";
+					Temp = Temp->next;
+				}
+				cout << endl;
+			}
+			deleteNode(hashTable3, hashTableSize1 + hashTableSize);
 		}
-	}
+		cout << "stop \"1\" , else \"0\"" << endl;
+		MENU = CHECK();
+	}while (MENU != 1);
+	deleteNode(hashTable, hashTableSize);
+	deleteNode(hashTable1, hashTableSize1);
 }
